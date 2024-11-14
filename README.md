@@ -1,35 +1,86 @@
 # Update-Sentinel
 
-This PowerShell script is designed to update all Azure Sentinel solutions in a specified Log Analytics workspace. It uses a service principal for authentication and updates the solutions if a newer version is available.
+# Update-Sentinel
 
-#Prerequisites
-PowerShell 5.1 or later
-Az module installed in your PowerShell environment
-Az.SecurityInsights module version 2.0.0-preview or later
-Az.OperationalInsights module installed in your PowerShell environment
-Usage
-Clone this repository to your local machine.
-Open PowerShell and navigate to the directory containing the script.
-Run the script with the necessary parameters.
+A PowerShell script for automatically updating Microsoft Sentinel solutions in your Azure workspace.
 
-.\Update-Sentinel.ps1 -WorkspaceName "<YourWorkspaceName>" -SubscriptionId "<YourSubscriptionId>" -TenantId "<YourTenantId>" -ClientId "<YourClientId>" -ClientSecret "<YourClientSecret>" -ResourceGroupName "<YourResourceGroupName>"
-Replace the placeholders with your actual values.
+## Description
 
-#Parameters
-WorkspaceName: The name of the Log Analytics workspace.
-SubscriptionId: The ID of the Azure subscription.
-TenantId: The ID of the Azure Active Directory tenant.
-ClientId: The client ID of the Azure Active Directory application.
-ClientSecret: The client secret of the Azure Active Directory application.
-ResourceGroupName: The name of the resource group.
-What the Script Does
-The script performs the following actions:
+This script automates the process of updating installed Microsoft Sentinel solutions to their latest available versions. It uses Azure REST APIs to identify installed solutions, compare their versions with available updates, and deploy newer versions when available.
 
-Authenticates using a service principal.
-Retrieves a list of installed solutions and available solutions.
-Compares the versions of installed solutions with the available solutions.
-If a newer version is available, it updates the solution.
-The script updates all available Sentinel solutions in the specified Log Analytics workspace.
-Note
-This script is designed for a specific use case and may require modifications to fit your needs.
-The script updates all available Sentinel solutions in the specified Log Analytics workspace.
+## Prerequisites
+
+- PowerShell 5.1 or higher
+- Azure subscription with appropriate permissions
+- Service Principal with necessary permissions to:
+  - Access the Azure Sentinel workspace
+  - Deploy ARM templates
+  - Modify resource groups
+
+## Required PowerShell Modules
+
+The script will automatically install the following modules if they're not present:
+- Az
+- Az.Resources
+- Az.SecurityInsights (version 2.0.0-preview)
+- Az.OperationalInsights
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| WorkspaceName | String | Yes | Name of the Azure Sentinel workspace |
+| SubscriptionId | String | Yes | Azure subscription ID |
+| TeamName | String | Yes | Name of the team |
+| TenantId | String | Yes | Azure AD tenant ID |
+| ClientId | String | Yes | Service Principal application (client) ID |
+| ClientSecret | String | Yes | Service Principal secret |
+| ResourceGroupName | String | Yes | Name of the resource group containing the workspace |
+
+## Usage
+
+```powershell
+.\Update-Sentinel.ps1 `
+    -WorkspaceName "your-workspace-name" `
+    -SubscriptionId "your-subscription-id" `
+    -TeamName "your-team-name" `
+    -TenantId "your-tenant-id" `
+    -ClientId "your-client-id" `
+    -ClientSecret "your-client-secret" `
+    -ResourceGroupName "your-resource-group-name"
+```
+
+## Features
+
+- Authenticates using Service Principal credentials
+- Retrieves list of installed Sentinel solutions
+- Compares installed versions with available updates
+- Updates solutions to their latest versions
+- Handles up to 10 solutions per execution
+- Provides progress feedback during execution
+
+## Limitations
+
+- Updates are limited to 10 solutions per run to prevent timeout issues
+- Requires preview version of Az.SecurityInsights module
+- Some post-deployment instructions may be stripped due to character limitations
+
+## Error Handling
+
+The script includes basic error handling for deployment failures. All errors are displayed in the console output for troubleshooting purposes.
+
+## Contributing
+
+Feel free to submit issues and enhancement requests. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+## Author
+
+[Your Name/Organization]
+
+## Disclaimer
+
+This script is provided as-is with no warranties. Always test in a non-production environment first.
