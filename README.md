@@ -1,7 +1,5 @@
 # Update-Sentinel
 
-# Update-Sentinel
-
 A PowerShell script for automatically updating Microsoft Sentinel solutions in your Azure workspace.
 
 ## Description
@@ -73,13 +71,10 @@ The script includes basic error handling for deployment failures. All errors are
 
 Feel free to submit issues and enhancement requests. For major changes, please open an issue first to discuss what you would like to change.
 
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
 
 ## Author
 
-[Your Name/Organization]
+Raihan Iqbal(mdsraihaniqbal1999@gmail.com)
 
 ## Disclaimer
 
